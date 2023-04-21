@@ -15,15 +15,14 @@ import sys
 
 def gradingStudents(grades):
     # Write your code here
-    Final_grades = list()
+    Final_grades = []
     
     for i in grades:
-        n = math.ceil(i / 5)
-        ref = n * 5
-        g = ref - i
+        n = round(i / 5)
+        rounded = n * 5
 
-        if g < 3 and i >= 38:
-            Final_grades.append(i + g)
+        if rounded > i and i >= 38:
+            Final_grades.append(rounded)
         else:
             Final_grades.append(i)
     

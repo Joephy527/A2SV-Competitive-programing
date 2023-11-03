@@ -1,28 +1,14 @@
-class Solution:
-    def checkInclusion(self, s1: str, s2: str) -> bool:
-        k = len(s1)
-        j = len(s2)
-        dic_s1 = Counter(s1)
-        l2 = [i for i in s2]
-        s3 = deque(l2[:k])
+s1count = Counter(s1)
+        s2count = Counter(s2[:len(s1)])
         l = 0
-        r = k
+        r = len(s1)
+        
+        while r < len(s2):
+            if s1count == s2count: return True
 
-        if k > j:
-            return False
-
-        while r <= j:
-            dic_s3 = Counter(s3)    
-
-            if dic_s1 == dic_s3:
-                return True
-            
-            s3.popleft()
-
-            if r != j:
-                s3.append(l2[r])
-                
+            s2count[s2[l]] -= 1 
+            s2count[s2[r]] = 1 + s2count.get(s2[r], 0)
             l += 1
             r += 1
-        
-        return False
+
+        return s1count == s2count

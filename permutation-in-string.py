@@ -1,4 +1,6 @@
-s1count = Counter(s1)
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        s1count = Counter(s1)
         s2count = Counter(s2[:len(s1)])
         l = 0
         r = len(s1)

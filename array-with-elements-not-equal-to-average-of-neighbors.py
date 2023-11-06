@@ -1,9 +1,13 @@
 class Solution:
     def rearrangeArray(self, nums: List[int]) -> List[int]:
-        for i in range(1, (len(nums) - 1)):
-            a = nums[i - 1]
-            b = nums[i]
-            c = nums[i + 1]
-            if (a < b < c) or (a > b > c):
-                nums[i], nums[i + 1] = nums[i + 1], nums[i]
-        return nums
+        nums.sort()
+        ans = []
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            if l == r:
+                ans.append(nums[l])
+                break
+            ans.extend([nums[l], nums[r]])
+            l += 1
+            r -= 1
+        return ans

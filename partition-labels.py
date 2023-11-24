@@ -1,18 +1,19 @@
 class Solution:
     def partitionLabels(self, s: str) -> List[int]:
-        count = {s[i]: i for i in range(len(s))}
-        i = 0
+        lastSeen = {c: i for i, c in enumerate(s)}
+        p = anchor = 0
         res = []
 
-        while i < len(s):
-            l, r = i + 1, count[s[i]]
+        for seeker in range(len(s) + 1):
+            if seeker == len(s):
+                res.append(seeker - p)
+                continue
 
-            while l < r:
-                if count[s[l]] > r:
-                    r = count[s[l]]
-                l += 1
-
-            res.append(r - i + 1)
-            i = r + 1
+            if lastSeen[s[seeker]] > lastSeen[s[anchor]]:
+                if seeker > lastSeen[s[anchor]]:
+                    res.append(seeker - p)
+                    p = anchor = seeker
+                else:
+                    anchor = seeker
 
         return res

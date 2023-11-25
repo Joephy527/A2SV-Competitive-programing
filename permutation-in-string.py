@@ -1,16 +1,17 @@
 class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
-        s1count = Counter(s1)
-        s2count = Counter(s2[:len(s1)])
-        l = 0
-        r = len(s1)
-        
-        while r < len(s2):
-            if s1count == s2count: return True
+        if len(s1) > len(s2): return False
 
-            s2count[s2[l]] -= 1 
-            s2count[s2[r]] = 1 + s2count.get(s2[r], 0)
+        countS1 = Counter(s1)
+        countS2 = Counter(s2[:len(s1) - 1])
+        l, r = 0, len(s1) - 1
+
+        while r < len(s2):
+            countS2[s2[r]] += 1
+
+            if countS1 == countS2:
+                return True
+
+            countS2[s2[l]] -= 1
             l += 1
             r += 1
-
-        return s1count == s2count

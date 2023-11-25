@@ -1,18 +1,19 @@
 class Solution:
     def totalFruit(self, fruits: List[int]) -> int:
-        l = 0
-        count = defaultdict(int)
+        count =defaultdict(int)
+        p = ans = 0
 
-        for fruit in fruits:
-            count[fruit] += 1
-            
-            if len(count) > 2:
-                count[fruits[l]] -= 1
-                if count[fruits[l]] == 0:
-                    del(count[fruits[l]])
-                
-                l += 1
+        for s in range(len(fruits)):
+            count[fruits[s]] += 1
 
-        ans = len(fruits) - l
+            while len(count) > 2:
+                count[fruits[p]] -= 1
 
-        return len(fruits) - l
+                if count[fruits[p]] == 0:
+                    del count[fruits[p]]
+
+                p += 1
+
+            ans = max(ans, s - p + 1)
+
+        return ans

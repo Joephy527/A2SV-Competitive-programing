@@ -1,28 +1,25 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if len(t) > len(s) or t == "": return ""
-
         countT = Counter(t)
-        countW = {}
-        l = 0
-        have, need = 0, len(countT)
-        res, resLen = [-l, -1], float("infinity")
-        
-        for r in range(len(s)):
-            countW[s[r]] = 1 + countW.get(s[r], 0)
-            if s[r] in countT and countW[s[r]] == countT[s[r]]:
-                have += 1
+        countS = defaultdict(int)
+        p = have = 0
+        ans = [0,0,float("inf")]
+
+        for seek in range(len(s)):
+            countS[s[seek]] += 1
             
-            while have == need:
-                if r - l + 1 < resLen:
-                    res = [l, r]
-                    resLen = r - l + 1
-                    
-                countW[s[l]] -= 1
-                if s[l] in countT and countW[s[l]] < countT[s[l]]:
+            if s[seek] in countT and countS[s[seek]] == countT[s[seek]]:
+                have += 1
+
+            while len(countT) == have:
+                if ans[2] > seek - p + 1:
+                    ans = [seek + 1, p , seek - p + 1]
+
+                countS[s[p]] -= 1
+                
+                if s[p] in countT and countS[s[p]] < countT[s[p]]:
                     have -= 1
+                
+                p += 1
 
-                l += 1
-
-        l, r = res
-        return s[l:r + 1] if resLen != float("infinity") else ""
+        return s[ans[1]:ans[0]] if ans[2] != float("inf") else ""

@@ -1,20 +1,25 @@
 class Solution:
     def minSubarray(self, nums: List[int], p: int) -> int:
-        if sum(nums) < p: return -1
-        target = sum(nums) % p
+        wholeSum = sum(nums)
 
+        if wholeSum < p: return -1
+
+        target = wholeSum % p
+        
         if target == 0: return 0
 
-        dic = defaultdict(int)
-        dic[0] = -1
-        cur = 0
-        minWin = len(nums)
+        count = defaultdict(int)
+        count[0] = -1
+        ans = len(nums)
+        s = 0
 
-        for i in range(len(nums)):
-            cur = (cur + nums[i]) % p
-            if (cur - target) % p in dic:
-                minWin = min(minWin, i - dic[(cur - target) % p])
+        for i, num in enumerate(nums):
+            s = (s + num) % p
+            diff = (s - target) % p
+            
+            if diff in count:
+                ans = min(ans, i - count[diff])
 
-            dic[cur] = i
+            count[s] = i
 
-        return minWin if minWin != len(nums) else -1
+        return ans if ans != len(nums) else -1

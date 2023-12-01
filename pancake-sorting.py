@@ -1,8 +1,12 @@
 class Solution:
     def pancakeSort(self, arr: List[int]) -> List[int]:
-        res = []
-        sus = 0
-        def select(index):
+        def swap(arr, l, r):
+            while l < r:
+                arr[l], arr[r] = arr[r], arr[l]
+                l += 1
+                r -= 1
+
+        def select(arr, index):
             idx = index
             for i in range(index):
                 if arr[i] > arr[idx]:
@@ -10,24 +14,17 @@ class Solution:
 
             return idx
 
-        def reverse(arr, l, r):
-            while l < r:
-                arr[l], arr[r] = arr[r], arr[l]
-                l += 1
-                r -= 1
+        res = []
 
         for i in range(len(arr) - 1, -1, -1):
-            idx = select(i)
-            
-            if idx == i:
-                sus += 1
-                continue
+            idx = select(arr, i)
 
-            reverse(arr, 0, idx)
-            reverse(arr, 0, i)
-            res.append(idx + 1)
+            if idx == i: continue
+
+            if idx != 0:
+                swap(arr, 0, idx)
+                res.append(idx + 1)
+            swap(arr, 0, i)
             res.append(i + 1)
 
-            print(arr)
-
-        return res if sus != len(arr) else []
+        return res

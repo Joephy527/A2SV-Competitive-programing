@@ -1,32 +1,22 @@
 class Solution:
     def maxTurbulenceSize(self, arr: List[int]) -> int:
-        if len(arr) < 3: return len(set(arr))
-        
-        p = ans = 0
-        while p < len(arr) - 1 and arr[p] == arr[p + 1]:
-            p += 1
-        
-        if p == len(arr) - 1: return 1
+        if len(arr) < 2: return 1
 
-        sign = -1 if arr[p] > arr[p + 1] else 1
+        p = sign = 0
+        ans = 1
 
-        for s in range(p + 2, len(arr)):
-            if arr[s - 1] == arr[s]:
-                ans = max(ans, s - p)
-                p = s
-                continue
-
-            if arr[s - 1] > arr[s]:
+        for s in range(1, len(arr)):
+            if arr[s - 1] < arr[s]:
+                currSign = 1
+            elif arr[s - 1] > arr[s]:
                 currSign = -1
             else:
-                currSign = 1
+                currSign = sign
 
             if currSign == sign:
-                ans = max(ans, s - p)
-                p = s - 1
-            else:
-                if s == len(arr) - 1:
-                    ans = max(ans, s - p + 1)
-                sign = currSign
+                p = s - 1 if arr[s - 1] != arr[s] else s
 
-        return ans if ans != 0 else len(set(arr))
+            sign = currSign
+            ans = max(ans, s - p + 1)
+
+        return ans

@@ -3,19 +3,16 @@ class Solution:
         stack = []
 
         for op in operations:
-            if op != "C" and op != "D" and op != "+":
-                stack.append(int(op))
-            
             if op == "C":
                 stack.pop()
-
-            if op == "D":
+            elif op == "D":
                 val = stack[-1] * 2
                 stack.append(val)
-
-            if op == "+":
+            elif op == "+":
                 val = stack[-1] + stack[-2]
                 stack.append(val)
+            else:
+                stack.append(int(op))
 
         ans = sum(stack)
         

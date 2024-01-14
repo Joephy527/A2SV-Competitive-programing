@@ -1,8 +1,8 @@
 class TimeMap:
 
     def __init__(self):
-        self.map1 = defaultdict(list)
-        self.map2 = {}
+        self.timeStamps = defaultdict(list)
+        self.values = {}
 
     def binarySearch(self, arr: List[int], target: int) -> int:
         if target < arr[0]: return -1
@@ -21,16 +21,16 @@ class TimeMap:
         return arr[l] if l < len(arr) and arr[l] < target else arr[r]
 
     def set(self, key: str, value: str, timestamp: int) -> None:
-        self.map1[key].append(timestamp)
-        self.map2[timestamp] = value
+        self.timeStamps[key].append(timestamp)
+        self.values[timestamp] = value
 
     def get(self, key: str, timestamp: int) -> str:
-        if key not in self.map1: return ""
+        if key not in self.timeStamps: return ""
 
-        arr = self.map1[key]
+        arr = self.timeStamps[key]
         ts = self.binarySearch(arr, timestamp)
 
-        return self.map2[ts] if ts in self.map2 else ""
+        return self.values[ts] if ts in self.values else ""
 
 
 # Your TimeMap object will be instantiated and called as such:

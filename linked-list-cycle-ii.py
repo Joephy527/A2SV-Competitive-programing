@@ -1,4 +1,4 @@
-linked-list-cycle-ii# Definition for singly-linked list.
+# Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
@@ -6,14 +6,19 @@ linked-list-cycle-ii# Definition for singly-linked list.
 
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        seen = set()
-        node = head
+        fast = slow = head
 
-        while node:
-            if node in seen:
-                return node
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
 
-            seen.add(node)
-            node = node.next
+            if slow == fast:
+                slow = head
+
+                while slow != fast:
+                    slow = slow.next
+                    fast = fast.next
+
+                return slow
 
         return

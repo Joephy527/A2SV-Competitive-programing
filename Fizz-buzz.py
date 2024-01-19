@@ -5,9 +5,9 @@ class Solution:
         
         for i in range(1, n+1):
             phrase = ""
-            for num, word in dic.items():
-                if i % num == 0:
-                    phrase += word
+            for key in dic:
+                if i % key == 0:
+                    phrase += dic[key]
 
             res.append(phrase if phrase != "" else str(i))
 

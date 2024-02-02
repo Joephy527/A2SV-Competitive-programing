@@ -10,9 +10,10 @@ import sys
 
 if __name__ == '__main__':
     n = int(input().strip())
+    
     weird = set()
-    for i in range(6, 21):
-        weird.add(i)
+    for number in range(6, 21):
+        weird.add(number)
 
     if n % 2 == 0 and n not in weird:
         print("Not Weird")

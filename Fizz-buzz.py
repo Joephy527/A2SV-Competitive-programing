@@ -1,14 +1,19 @@
 class Solution:
     def fizzBuzz(self, n: int) -> List[str]:
-        dic = {3: "Fizz", 5: "Buzz"}
-        res = []
+        relatedPhrases = {3: "Fizz", 5: "Buzz"}
+        result = []
+
+        for number in range(1, n+1):
+            phrase = self.getPhrase(relatedPhrases, number)
+            result.append(phrase)
+
+        return result
+
+    def getPhrase(self, relatedPhrases, number):
+        phrase = ""
         
-        for i in range(1, n+1):
-            phrase = ""
-            for key in dic:
-                if i % key == 0:
-                    phrase += dic[key]
+        for key in relatedPhrases:
+            if number % key == 0:
+                phrase += relatedPhrases[key]
 
-            res.append(phrase if phrase != "" else str(i))
-
-        return res
+        return phrase if phrase else str(number)

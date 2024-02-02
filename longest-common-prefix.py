@@ -1,12 +1,15 @@
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        ans=""
+        answer = ""
         strs.sort()
 
-        for i in range(min(len(strs[0]),len(strs[-1]))):
+        # get shortest word from the first and last word
+        smallestWordLength = min(len(strs[0]),len(strs[-1]))
+        
+        for i in range(smallestWordLength):
             if strs[0][i] != strs[-1][i]:
-                return ans
+                return answer
             
-            ans += strs[0][i]
+            answer += strs[0][i]
 
-        return ans
+        return answer

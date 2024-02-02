@@ -1,9 +1,9 @@
 class Solution:
     def numIdenticalPairs(self, nums: List[int]) -> int:
-        ans = 0
+        goodPairs = 0
         count = Counter(nums)
 
-        for i in count.values():
-            ans += sum(range(i))
+        for amount in count.values():
+            goodPairs += sum(range(amount))
 
-        return ans
+        return goodPairs

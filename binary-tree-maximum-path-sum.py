@@ -13,15 +13,12 @@ class Solution:
 
             if not node: return 0
 
-            left = dfs(node.left)
-            right = dfs(node.right)
+            left = max(dfs(node.left), 0)
+            right = max(dfs(node.right), 0)
+            subTreeSum = node.val + left + right
+            maxPathSum = max(maxPathSum, subTreeSum)
             
-            curMaxPathSum = max(left, right) + node.val
-            subTreeSum = curMaxPathSum + min(left, right)
-
-            maxPathSum = max(maxPathSum, curMaxPathSum, subTreeSum, node.val)
-
-            return max(curMaxPathSum, node.val)
+            return max(left, right) + node.val
 
         dfs(root)
 

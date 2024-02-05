@@ -12,7 +12,8 @@ if __name__ == '__main__':
     
     for name, score in records:
         if score != minScore:
-            secondMinScore = min(secondMinScore, score)
+            secondMinScore = score
+            break
             
     for name, score in records:
         if score == secondMinScore:

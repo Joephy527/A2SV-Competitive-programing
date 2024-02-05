@@ -1,17 +1,18 @@
 class Solution:
     def freqAlphabets(self, s: str) -> str:
-        idx = len(s) - 1
-        formedString = []
+        alp = [chr(i) for i in range(97, 123)]
+        chars = []
+        formedStr = ""
 
-        while idx >= 0:
-            c = s[idx]
+        for c in s:
+            char = c
+            if c == "#":
+                sec, first = chars.pop(), chars.pop()
+                char = first + sec
 
-            if s[idx] == "#":
-                c = s[idx - 2:idx]
-                idx -= 2
-            
-            char = chr(ord("a") + int(c) - 1)
-            formedString.append(char)
-            idx -= 1
+            chars.append(char)
 
-        return "".join(formedString[::-1])
+        for char in chars:
+            formedStr += alp[int(char) - 1]
+
+        return formedStr

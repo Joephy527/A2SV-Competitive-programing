@@ -1,28 +1,10 @@
 class Solution:
     def subsetXORSum(self, nums: List[int]) -> int:
-        def helper(arr):
-            s = 0
-
-            for num in arr:
-                s ^= num
-
-            return s
-        
-        add = 0
-        subSet = []
-
-        def backTrack(idx):
+        def backTrack(idx, add):
             if idx == len(nums):
-                nonlocal add
-                add += helper(subSet[:])
+                return add
 
-                return
+            return (backTrack(idx + 1, add ^ nums[idx]) +
+                    backTrack(idx + 1, add ))
 
-            subSet.append(nums[idx])
-            backTrack(idx + 1)
-            subSet.pop()
-            backTrack(idx + 1)
-
-        backTrack(0)
-
-        return add
+        return backTrack(0, 0)

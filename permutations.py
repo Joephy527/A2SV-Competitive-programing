@@ -1,18 +1,23 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        permutations = []
+        per = []
+        sub = []
+        seen = set()
 
-        if len(nums) == 1:
-            return [nums[:]]
+        def backTrack():
+            if len(sub) == len(nums):
+                per.append(sub[:])
 
-        for i in range(len(nums)):
-            n = nums.pop(0)
-            perms = self.permute(nums)
+                return
             
-            for perm in perms:
-                perm.append(n)
+            for i, num in enumerate(nums):
+                if i not in seen:
+                    sub.append(num)
+                    seen.add(i)
+                    backTrack()
+                    sub.pop()
+                    seen.remove(i)
 
-            permutations.extend(perms)
-            nums.append(n)
+        backTrack()
 
-        return permutations
+        return per

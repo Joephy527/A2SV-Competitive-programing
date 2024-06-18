@@ -1,22 +1,32 @@
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
-        row, col = len(grid), len(grid[0])
-        directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-        seen = set()
-        perimeter = 0
+        rows, cols = len(grid), len(grid[0])
+        directions = [(1, 0), (0, 1), (0, -1), (-1, 0)]
+        visited = set()
 
-        for r in range(row):
-            for c in range(col):
-                if grid[r][c] == 1:
-                    perimeter += 4
+        def isLand(r, c):
+            return (0 <= r < rows and
+                    0 <= c < cols and
+                    grid[r][c])
 
-                    for y, x in directions:
-                        new_r = r + y
-                        new_c = c + x
+        def dfs(r, c):
+            visited.add((r, c))
 
-                        if (new_r, new_c) in seen:
-                            perimeter -= 2
+            perimeter = 0
 
-                    seen.add((r, c))
+            for x, y in directions:
+                row = r + x
+                col = c + y
 
-        return perimeter
+                if (row, col) not in visited:
+                    if isLand(row, col):
+                        perimeter += dfs(row, col)
+                    else:
+                        perimeter += 1
+
+            return perimeter
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c]:
+                    return dfs(r, c)

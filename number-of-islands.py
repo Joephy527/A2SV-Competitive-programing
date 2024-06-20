@@ -1,27 +1,30 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         rows, cols = len(grid), len(grid[0])
-        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        seen = set()
+        directions = [(-1, 0), (0, -1), (1, 0), (0, 1)]
+        visited = set()
         islands = 0
+        
+        def isInBound(row, col):
+            return 0 <= row < rows and 0 <= col < cols
 
+        def isLand(row, col):
+            return grid[row][col] == "1"
+        
         def dfs(row, col):
-            seen.add((row, col))
+            visited.add((row, col))
 
-            for y, x in directions:
-                newR = row + y
-                newC = col + x
+            for x, y in directions:
+                r = row + x
+                c = col + y
 
-                if (0 <= newR < rows and 0 <= newC < cols and
-                    (newR, newC) not in seen and
-                    grid[newR][newC] == "1"):
-                    dfs(newR, newC)
+                if isInBound(r, c) and isLand(r, c) and (r, c) not in visited:
+                    dfs(r, c)
 
         for r in range(rows):
             for c in range(cols):
-                if grid[r][c] == "1" and (r, c) not in seen:
+                if isLand(r, c) and (r, c) not in visited:
                     islands += 1
-                    
                     dfs(r, c)
-                    
+
         return islands

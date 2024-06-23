@@ -1,35 +1,31 @@
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
         distinctSolutions = []
-        boardConf = [["."] * n for i in range(n)]
+        board = [["."] * n for i in range(n)]
+        column, additionDiagonal, substractDiagonal = set(), set(), set()
 
-        col = set()
-        diagonalOne = set()
-        diagonalTwo = set()
-
-        def backTrack(r):
-            if r >= n:
-                temp = ["".join(row) for row in boardConf]
-                distinctSolutions.append(temp)
+        def backTrack(row):
+            if row >= n:
+                solution = ["".join(row) for row in board]
+                distinctSolutions.append(solution)
 
                 return
 
-            for c in range(n):
-                if (c not in col
-                    and r + c not in diagonalOne
-                    and r - c not in diagonalTwo):
+            for col in range(n):
+                if (col not in column and row + col not in additionDiagonal
+                    and row - col not in substractDiagonal):
 
-                    col.add(c)
-                    diagonalOne.add(r + c)
-                    diagonalTwo.add(r - c)
-                    boardConf[r][c] = "Q"
+                    column.add(col)
+                    additionDiagonal.add(row + col)
+                    substractDiagonal.add(row - col)
+                    board[row][col] = "Q"
 
-                    backTrack(r + 1)
+                    backTrack(row + 1)
 
-                    col.remove(c)
-                    diagonalOne.remove(r + c)
-                    diagonalTwo.remove(r - c)
-                    boardConf[r][c] = "."
+                    column.remove(col)
+                    additionDiagonal.remove(row + col)
+                    substractDiagonal.remove(row - col)
+                    board[row][col] = "."
 
         backTrack(0)
 

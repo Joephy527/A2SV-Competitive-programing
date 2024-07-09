@@ -4,7 +4,6 @@ class Solution:
         heapify(heap)
 
         for _ in range(k):
-            cur = floor(heappop(heap) / 2)
-            heappush(heap, cur)
+            heapreplace(heap, heap[0] // 2)
 
         return -sum(heap)

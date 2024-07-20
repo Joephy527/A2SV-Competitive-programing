@@ -1,19 +1,15 @@
 class Solution:
     def partitionLabels(self, s: str) -> List[int]:
-        lastSeen = {}
-        
-        for i, c in enumerate(s):
-            lastSeen[c] = i
-        
-        p = curr = 0
-        res = []
+        lastSeen = {c: i for i, c in enumerate(s)}
+        p = anchor = 0
+        partitions = []
 
-        for seek, c in enumerate(s):
-            if lastSeen[c] > lastSeen[s[curr]]:
-                curr = seek
+        for seek in range(len(s)):
+            if lastSeen[s[seek]] > lastSeen[s[anchor]]:
+                anchor = seek
 
-            if lastSeen[c] == seek and c == s[curr]:
-                res.append(seek - p + 1)
+            if lastSeen[s[anchor]] == seek:
+                partitions.append(seek - p + 1)
                 p = seek + 1
 
-        return res
+        return partitions

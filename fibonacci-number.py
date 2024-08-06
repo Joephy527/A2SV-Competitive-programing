@@ -1,7 +1,11 @@
 class Solution:
     def fib(self, n: int) -> int:
-        if n == 1: return 1
-        
-        if n == 0: return 0
+        memo = {0: 0, 1: 1}
 
-        return self.fib(n - 1) + self.fib(n - 2)
+        def fibonacci(num):
+            if num not in memo:
+                memo[num] = fibonacci(num - 1) + fibonacci(num - 2)
+
+            return memo[num]
+
+        return fibonacci(n)

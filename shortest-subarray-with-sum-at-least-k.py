@@ -1,31 +1,19 @@
 class Solution:
     def shortestSubarray(self, nums: List[int], k: int) -> int:
-        n = len(nums)
+        minSubArray = float("inf")
+        s = 0
+        prefixHeap = []
 
-        if n == 1 : 
-            if nums[0] >= k : 
-                return 1 
+        for idx, num in enumerate(nums):
+            s += num
 
-            return -1 
+            if s >= k:
+                minSubArray = min(minSubArray, idx + 1)
 
-        queue = deque()
-        prefix = [0]
+            while prefixHeap and s - prefixHeap[0][0] >= k:
+                _, minIdx = heappop(prefixHeap)
+                minSubArray = min(minSubArray, idx - minIdx)
 
-        for num in nums :
-            prefix.append(prefix[-1] + num)
+            heappush(prefixHeap, (s, idx))
 
-        minSize = n + 1
-
-        for idx, val in enumerate(prefix) : 
-            while queue and val <= prefix[queue[-1]] : 
-                queue.pop()
-
-            while queue and val - prefix[queue[0]] >= k : 
-                minSize = min(minSize, idx - queue.popleft())
-
-            queue.append(idx)
-
-        if minSize != n + 1 : 
-            return minSize
-
-        return -1 
+        return minSubArray if minSubArray != float("inf") else -1

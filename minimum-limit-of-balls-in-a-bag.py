@@ -1,7 +1,5 @@
 class Solution:
     def minimumSize(self, nums: List[int], maxOperations: int) -> int:
-        nums.sort()
-        
         def isValidMin(target):
             totalOperations = 0
 

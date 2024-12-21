@@ -9,20 +9,19 @@ class Employee:
 
 class Solution:
     def getImportance(self, employees: List['Employee'], id: int) -> int:
-        employeesDict = {}
+        employeesMap = {}
+
         for employee in employees:
-            employeesDict[employee.id] = employee
+            employeesMap[employee.id] = employee
 
-        def calcImportance(node):
-            if not node: return
+        def dfs(vertex):
+            importance = vertex.importance
 
-            importance = node.importance
-
-            for subordinate in node.subordinates:
-                importance += calcImportance(employeesDict[subordinate])
+            for employeeId in vertex.subordinates:
+                importance += dfs(employeesMap[employeeId])
 
             return importance
 
         for employee in employees:
             if employee.id == id:
-                return calcImportance(employee)
+                return dfs(employee)

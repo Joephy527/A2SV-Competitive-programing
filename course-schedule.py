@@ -3,24 +3,24 @@ class Solution:
         graph = [[] for _ in range(numCourses)]
         visited = [0] * numCourses
 
-        for u, v in prerequisites:
-            graph[u].append(v)
+        for a, b in prerequisites:
+            graph[a].append(b)
 
         def dfs(vertex):
             visited[vertex] = 1
 
             for neigh in graph[vertex]:
-                if visited[neigh] == 2:
-                    continue
-                elif visited[neigh] == 1 or not dfs(neigh):
+                if (visited[neigh] == 1 or 
+                    (not visited[neigh] and 
+                    not dfs(neigh))):
                     return
-
+            
             visited[vertex] = 2
 
             return True
 
         for v in range(numCourses):
             if not visited[v] and not dfs(v):
-                return
+                return False
 
         return True

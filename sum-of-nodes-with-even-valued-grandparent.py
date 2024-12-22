@@ -5,14 +5,18 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def sumEvenGrandparent(self, root: TreeNode) -> int:
+    def sumEvenGrandparent(self, root: Optional[TreeNode]) -> int:
+        evenSum = [0]
+        
         def dfs(node, parent, grandParent):
-            if not node:
-                return 0
+            if not node: return
 
-            left = dfs(node.left, node.val, parent)
-            right = dfs(node.right, node.val, parent)
+            if not grandParent % 2:
+                evenSum[0] += node.val
 
-            return left + right + (node.val if not grandParent % 2 else 0)
+            dfs(node.left, node.val, parent)
+            dfs(node.right, node.val, parent)
 
-        return dfs(root, 1, 1)
+        dfs(root, 1, 1)
+
+        return evenSum[0]

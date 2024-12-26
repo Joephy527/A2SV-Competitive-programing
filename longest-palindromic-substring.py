@@ -1,24 +1,25 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        if len(s) == 1:
+        n = len(s)
+        
+        if n == 1:
             return s
+        
+        memo = [[False] * n for _ in range(n)]
+        length = 1
+        longest = s[0]
 
-        maxSubstring = s[0]
+        for end in range(n):
+            memo[end][end] = True
 
-        for i in range(len(s) - 1):
-            oneCenter = self.findPalindrome(s, i, i)
-            twoCenter = self.findPalindrome(s, i, i + 1)
+            for start in range(end):
+                if (s[start] == s[end] and
+                    (end - start < 3 or
+                    memo[start + 1][end - 1])):
+                    memo[start][end] = True
+                    
+                    if length < end - start + 1:
+                        length = end - start + 1
+                        longest = s[start:end + 1]
 
-            if len(oneCenter) > len(maxSubstring):
-                maxSubstring = oneCenter
-
-            if len(twoCenter) > len(maxSubstring):
-                maxSubstring = twoCenter
-
-        return maxSubstring
-
-    def findPalindrome(self, s, l, r):
-        while l >= 0 and r < len(s) and s[l] == s[r]:
-            l -= 1
-            r += 1
-        return s[l + 1:r]
+        return longest

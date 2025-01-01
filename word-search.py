@@ -1,28 +1,34 @@
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
-        m, n = len(board), len(board[0])
-        visited = set()
+        rows, cols = len(board), len(board[0])
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        visited = [[False] * cols for _ in range(rows)]
 
-        def backTrack(row, col, idx):
-            if idx == len(word): return True
+        def is_inbound(row, col):
+            return rows > row >= 0 <= col < cols
+        
+        def back_track(row, col, idx):
+            if idx == len(word):
+                return True
 
-            if (row >= m or col >= n or
-                row < 0 or col < 0 or
-                word[idx] != board[row][col] or
-                (row, col) in visited):
+            if (not is_inbound(row, col) or
+                visited[row][col] or
+                word[idx] != board[row][col]):
+                return
+
+            visited[row][col] = True
+
+            for x, y in directions:
+                r, c = row + x, col + y
                 
-                return False
-
-            visited.add((row, col))
-            hasWord =  (backTrack(row + 1, col, idx + 1) or
-                        backTrack(row - 1, col, idx + 1) or
-                        backTrack(row, col + 1, idx + 1) or
-                        backTrack(row, col - 1, idx + 1))
-            visited.remove((row, col))
-
-            return hasWord
-
-        for row in range(m):
-            for col in range(n):
-                if backTrack(row, col, 0):
+                if back_track(r, c, idx + 1):
                     return True
+            
+            visited[row][col] = False
+
+        for row in range(rows):
+            for col in range(cols):
+                if back_track(row, col, 0):
+                    return True
+
+        return False

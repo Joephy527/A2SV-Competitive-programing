@@ -1,18 +1,18 @@
 class Solution:
     def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
         vowels = {"a", "e", "i", "o", "u"}
-        vowelCount = []
-        s = 0
-        res = []
+        vowel_count = [0] * len(words)
+        vowel_strings = [0] * len(queries)
+        prefix_sum = 0
 
-        for word in words:
+        for idx, word in enumerate(words):
             if word[0] in vowels and word[-1] in vowels:
-                s += 1
+                prefix_sum += 1
             
-            vowelCount.append(s)
+            vowel_count[idx] = prefix_sum
 
-        for l, r in queries:
-            curVowels = vowelCount[r] - vowelCount[l - 1] if l > 0 else vowelCount[r]
-            res.append(curVowels)
+        for idx, (left, right) in enumerate(queries):
+            vowel_strings[idx] = vowel_count[right]
+            vowel_strings[idx] -= vowel_count[left - 1] if left else 0
 
-        return res
+        return vowel_strings

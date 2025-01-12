@@ -1,32 +1,29 @@
 class Solution:
     def canBeValid(self, s: str, locked: str) -> bool:
-        if len(s) % 2 == 1:
+        if len(s) % 2:
             return False
-			
-        openCount = options = optionsBorrowed = 0
-        
-        for i in range(len(s)):
+
+        stack = []
+        unlocked = []
+
+        for i, c in enumerate(s):
             if locked[i] == "0":
-                if openCount:
-                    openCount -= 1
-                    optionsBorrowed += 1
-                else:
-                    options += 1
-                continue
-                
-            if s[i] == "(":
-                openCount += 1
-                continue
-                
-            if openCount:
-                openCount -= 1
-            elif optionsBorrowed:
-                optionsBorrowed -= 1
-                options += 1
-            elif options:
-                options -= 1
+                unlocked.append(i)
+            elif c == "(":
+                stack.append(i)
             else:
-                return False
-                
-        if not openCount:
-            return True
+                if stack:
+                    stack.pop()
+                elif unlocked:
+                    unlocked.pop()
+                else:
+                    return False
+
+        while (
+            stack and unlocked and
+            stack[-1] < unlocked[-1]
+        ):
+            stack.pop()
+            unlocked.pop()
+
+        return not stack

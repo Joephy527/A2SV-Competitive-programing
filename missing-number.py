@@ -1,7 +1,12 @@
 class Solution:
     def missingNumber(self, nums: List[int]) -> int:
-        seen = set(nums)
+        n = len(nums)
+        xor = 0
 
-        for num in range(len(nums) + 1):
-            if num not in seen:
-                return num
+        for num in range(n + 1):
+            xor ^= num
+
+        for num in nums:
+            xor ^= num
+
+        return xor

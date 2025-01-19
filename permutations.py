@@ -1,23 +1,22 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        per = []
-        sub = []
-        seen = set()
+        n = len(nums)
+        permutations, sub_sequence = [], []
 
-        def backTrack():
-            if len(sub) == len(nums):
-                per.append(sub[:])
-
+        def back_track(mask=0): 
+            if len(sub_sequence) == n:
+                permutations.append(sub_sequence[:])
+                
                 return
-            
-            for i, num in enumerate(nums):
-                if i not in seen:
-                    sub.append(num)
-                    seen.add(i)
-                    backTrack()
-                    sub.pop()
-                    seen.remove(i)
 
-        backTrack()
-
-        return per
+            for i in range(n):
+                bit = 1 << i
+                
+                if not (mask & bit):
+                    sub_sequence.append(nums[i])
+                    back_track(mask | bit)
+                    sub_sequence.pop()
+        
+        back_track()
+        
+        return permutations

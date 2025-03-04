@@ -1,19 +1,19 @@
 class Solution:
     def pivotArray(self, nums: List[int], pivot: int) -> List[int]:
-        rearrange = []
-        pivotAmount = 0
+        ans = [0] * len(nums)
+        less_idx = 0
+        greater_idx = len(nums) - 1
 
-        for num in nums:
-            if num < pivot:
-                rearrange.append(num)
-            elif num == pivot:
-                pivotAmount += 1
-        
-        for i in range(pivotAmount):
-            rearrange.append(pivot)
+        for i, j in zip(range(len(nums)), range(len(nums) - 1, -1, -1)):
+            if nums[i] < pivot:
+                ans[less_idx] = nums[i]
+                less_idx += 1
+            if nums[j] > pivot:
+                ans[greater_idx] = nums[j]
+                greater_idx -= 1
 
-        for num in nums:
-            if pivot < num:
-                rearrange.append(num)
+        while less_idx <= greater_idx:
+            ans[less_idx] = pivot
+            less_idx += 1
 
-        return rearrange
+        return ans

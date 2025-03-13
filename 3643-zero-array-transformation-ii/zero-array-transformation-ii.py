@@ -5,6 +5,7 @@ class Solution:
 
         def is_sum_zero(idx):
             prefix = [0] * (len(nums) + 1)
+            prefix_sum = 0
 
             for i in range(idx + 1):
                 l, r, val = queries[i]
@@ -12,11 +13,10 @@ class Solution:
                 prefix[l] += val
                 prefix[r + 1] -= val
 
-            for i in range(1, len(prefix)):
-                prefix[i] += prefix[i - 1]
-
-            for num, val in zip(nums, prefix):
-                if num > val:
+            for i in range(len(nums)):
+                prefix_sum += prefix[i]
+                
+                if prefix_sum < nums[i]:
                     return
 
             return True

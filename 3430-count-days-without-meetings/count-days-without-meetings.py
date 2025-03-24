@@ -1,12 +1,9 @@
 class Solution:
     def countDays(self, days: int, meetings: List[List[int]]) -> int:
         meetings.sort()
-        prev = 0
-        no_meetings = 0
+        prev = no_meetings = 0
 
-        for i in range(len(meetings)):
-            start, end = meetings[i]
-
+        for start, end in meetings:
             if start - 1 > prev:
                 no_meetings += start - prev - 1
 

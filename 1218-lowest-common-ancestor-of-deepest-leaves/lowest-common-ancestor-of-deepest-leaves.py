@@ -8,16 +8,18 @@ class Solution:
     def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         def dfs(node):
             if not node:
-                return (None, 0)
+                return None, 0
 
-            leftNode, leftHeight = dfs(node.left)
-            rightNode, rightHeight = dfs(node.right)
+            left_node, left_height = dfs(node.left)
+            right_node, right_height = dfs(node.right)
 
-            if leftHeight == rightHeight:
-                return (node, leftHeight + 1)
-            elif leftHeight > rightHeight:
-                return (leftNode, leftHeight + 1)
-            else:
-                return (rightNode, rightHeight + 1)
+            if left_height == right_height:
+                return node, left_height + 1
+            elif left_height > right_height:
+                return left_node, left_height + 1
+            
+            return right_node, right_height + 1
 
-        return dfs(root)[0]
+        lca, _ = dfs(root)
+
+        return lca

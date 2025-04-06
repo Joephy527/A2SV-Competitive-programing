@@ -3,22 +3,32 @@ class Solution:
         nums.sort()
         
         memo = {}
+        max_subset = []
         
-        def back_track(idx, prev):
+        def back_track(idx):
             if idx == len(nums):
                 return []
 
-            if (idx, prev) not in memo:
-                cur_subset = back_track(idx + 1, prev)
+            if idx not in memo:
+                cur_subset = [nums[idx]]
 
-                if not nums[idx] % prev:
-                    max_idx = back_track(idx + 1, nums[idx])
+                for j in range(idx + 1, len(nums)):
+                    if nums[j] % nums[idx]:
+                        continue
 
-                    if len(max_idx) >= len(cur_subset):
-                        cur_subset = [nums[idx]] + max_idx
+                    max_j = back_track(j)
 
-                memo[(idx, prev)] = cur_subset
+                    if len(max_j) >= len(cur_subset):
+                        cur_subset = [nums[idx]] + max_j
 
-            return memo[(idx, prev)]
+                memo[idx] = cur_subset
 
-        return back_track(0, 1)
+            return memo[idx]
+
+        for i in range(len(nums)):
+            max_i = back_track(i)
+
+            if len(max_i) > len(max_subset):
+                max_subset = max_i
+
+        return max_subset

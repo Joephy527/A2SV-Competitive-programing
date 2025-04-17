@@ -5,7 +5,7 @@ class Solution:
         
         for j, x in enumerate(nums):
             for i in count[x]:
-                pair += (i*j % k == 0)
+                pair += (i * j % k == 0)
             
             count[x].append(j)
         

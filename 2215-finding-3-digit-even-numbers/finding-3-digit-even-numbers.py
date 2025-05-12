@@ -1,30 +1,27 @@
 class Solution:
     def findEvenNumbers(self, digits: List[int]) -> List[int]:
-        unique_evens = set()
+        count = Counter(digits)
+        unique_even = []
 
-        def is_unique(i, j, k):
-            return (
-                digits[k] % 2 == 0 and
-                i != j and i != k and j != k and
-                digits[i] != 0
-            )
-        
-        def get_unique_num(hund_digit, tenth_digit, ones_digit):
-            return (
-                hund_digit * 100 + 
-                tenth_digit * 10 + 
-                ones_digit
-            )
+        def change_count(digs, change):
+            for d in digs:
+                count[d] += change
 
-        for i in range(len(digits)):
-            for j in range(len(digits)):
-                for k in range(len(digits)):
-                    if is_unique(i, j, k):
-                        num = get_unique_num(
-                            digits[i],
-                            digits[j],
-                            digits[k]
-                        )
-                        unique_evens.add(num)
+        def is_unique(digs):
+            for d in digs:
+                if count[d] < 0:
+                    return False
 
-        return sorted(unique_evens)
+            return True
+
+        for digit in range(100, 1000, 2):
+            digs = digit % 10, (digit // 10) % 10, digit // 100
+            
+            change_count(digs, -1)
+            
+            if is_unique(digs):
+                unique_even.append(digit)
+
+            change_count(digs, 1)
+
+        return unique_even

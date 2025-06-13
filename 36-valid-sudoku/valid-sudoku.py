@@ -11,20 +11,19 @@ class Solution:
             for c in range(cols):
                 cur = board[r][c]
 
-                if cur == ".":
-                    continue
+                if cur == ".": continue
 
-                box_row, box_col = r // 3, c // 3
+                box_idx = (r // 3, c // 3)
 
                 if (
                     cur in col[c] or
                     cur in row[r] or
-                    cur in box[(box_row, box_col)]
+                    cur in box[box_idx]
                 ):
                     return False
 
                 col[c].add(cur)
                 row[r].add(cur)
-                box[(box_row, box_col)].add(cur)
+                box[box_idx].add(cur)
 
         return True

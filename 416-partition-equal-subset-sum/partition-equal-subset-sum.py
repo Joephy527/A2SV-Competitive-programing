@@ -1,20 +1,15 @@
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
-        memo = {}
         s = sum(nums)
 
-        def back_track(idx, target):
-            if idx == len(nums):
-                return target == 0
+        if s % 2: return False
 
-            key = (idx, target)
+        target = s // 2
+        memo = [False] * (target + 1)
+        memo[0] = True
 
-            if key not in memo:
-                memo[key] = (
-                    back_track(idx + 1, target) or 
-                    back_track(idx + 1, target - nums[idx])
-                ) 
+        for num in nums:
+            for t in range(target, num - 1, -1):
+                memo[t] = memo[t] or memo[t - num]
 
-            return memo[key] 
-
-        return not s % 2 and back_track(0, s / 2)
+        return memo[-1]

@@ -2,54 +2,39 @@ class Solution:
     def largestIsland(self, grid: List[List[int]]) -> int:
         rows, cols = len(grid), len(grid[0])
         directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-        visited = [[0] * cols for _ in range(rows)]
-        island_area = {}
-        island_number = 1
-        island = 0
+        area_map = defaultdict(int)
 
         def in_bound(row, col):
             return rows > row >= 0 <= col < cols
 
         def is_land(row, col):
-            return grid[row][col] == 1 and not visited[row][col]
+            return grid[row][col] == 1
 
         def dfs(row, col):
-            visited[row][col] = island_number
-
+            grid[row][col] = -1
             area = 1
 
             for x, y in directions:
                 r, c = x + row, y + col
 
-                if in_bound(r, c) and is_land(r, c):
-                    area += dfs(r, c)
-            
+                if in_bound(r, c):
+                    if is_land(r, c):
+                        area += dfs(r, c)
+                    elif not grid[r][c]:
+                        water.add((r, c))
+
             return area
 
         for row in range(rows):
             for col in range(cols):
                 if is_land(row, col):
+                    water = set()
                     area = dfs(row, col)
-                    island_area[island_number] = area
-                    island_number += 1
-                    island = max(island, area)
 
-        for row in range(rows):
-            for col in range(cols):
-                if not grid[row][col]:
-                    area = 1
-                    seen = set()
+                    for cell in water:
+                        area_map[cell] += area
 
-                    for x, y in directions:
-                        r, c = x + row, y + col
+        if area_map:
+            return 1 + max(area_map.values())
 
-                        if (
-                            in_bound(r, c) and grid[r][c] and
-                            visited[r][c] not in seen
-                        ):
-                            area += island_area[visited[r][c]]
-                            seen.add(visited[r][c])
-
-                    island = max(island, area)
-
-        return island
+        return rows * cols if grid[0][0] else 1

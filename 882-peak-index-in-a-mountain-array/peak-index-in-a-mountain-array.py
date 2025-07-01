@@ -5,11 +5,11 @@ class Solution:
         while left <= right:
             mid = (left + right) // 2
             m =  arr[mid]
-            l, r = arr[max(mid - 1, 0)], arr[min(mid + 1, len(arr) - 1)]
+            l, r = arr[mid - 1], arr[mid + 1]
 
             if l < m > r:
                 return mid
             elif l > arr[mid]:
-                right = mid - 1
+                right = mid
             else:
                 left = mid + 1

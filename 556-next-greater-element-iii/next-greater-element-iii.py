@@ -1,26 +1,23 @@
 class Solution:
     def nextGreaterElement(self, n: int) -> int:
-        if n < 12:
-            return -1
-        
         max_int = 2 ** 31
+        digits = list(str(n))
+        i, j = len(digits) - 2, len(digits) - 1
 
-        num_str = [d for d in str(n)]
+        while i >= 0 and digits[i] >= digits[i + 1]:
+            i -= 1
 
-        for i in range(len(num_str) - 2, -1, -1):
-            if int(num_str[i]) < int(num_str[i + 1]):
-                for j in range(len(num_str) - 1, i, -1):
-                    if int(num_str[j]) > int(num_str[i]):
-                        num_str[i], num_str[j] = num_str[j], num_str[i]
-                        num_str = num_str[:i + 1] + num_str[i + 1:][::-1]
+        if i == -1: return -1
 
-                        break
+        while j > i and digits[j] <= digits[i]:
+            j -= 1
 
-                break
+        digits[i], digits[j] = digits[j], digits[i]
+        digits[i + 1:] = reversed(digits[i + 1:])
 
-        num = int("".join(num_str))
+        num = int("".join(digits))
 
-        if num >= max_int or num == n:
+        if num >= max_int:
             return -1
 
         return num

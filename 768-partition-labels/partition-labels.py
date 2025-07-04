@@ -1,9 +1,8 @@
 class Solution:
     def partitionLabels(self, s: str) -> List[int]:
         idx_map = {}
-        p = 0
         partitions = []
-        last_seen = 0
+        last_seen = p = 0
 
         for i, c in enumerate(s):
             idx_map[c] = i

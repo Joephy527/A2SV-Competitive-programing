@@ -1,6 +1,14 @@
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         count = Counter(nums)
-        sorted_nums = sorted(count.keys(), key=lambda x:count[x], reverse=True)
+        heap = []
 
-        return sorted_nums[:k]
+        print(count)
+
+        for num, cnt in count.items():
+            heappush(heap, (cnt, num))
+
+            if len(heap) > k:
+                heappop(heap)
+
+        return [num for _, num in heap]

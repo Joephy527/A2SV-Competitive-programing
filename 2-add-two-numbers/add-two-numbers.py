@@ -11,7 +11,7 @@ class Solution:
         length1 = length2 = 0
         cur1, cur2 = l1, l2
 
-        while cur1 or cur2:
+        while cur1 or cur2 or rem:
             cur_val = rem
             cur_val += cur1.val if cur1 else 0
             cur_val += cur2.val if cur2 else 0
@@ -23,8 +23,5 @@ class Solution:
             
             cur1 = cur1.next if cur1 else cur1
             cur2 = cur2.next if cur2 else cur2
-
-        if rem:
-            cur.next = ListNode(rem)
 
         return dummy.next

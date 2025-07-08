@@ -8,7 +8,6 @@ class Solution:
         dummy = ListNode()
         cur = dummy
         rem = 0
-        length1 = length2 = 0
         cur1, cur2 = l1, l2
 
         while cur1 or cur2 or rem:

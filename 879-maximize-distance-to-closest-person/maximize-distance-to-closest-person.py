@@ -1,28 +1,21 @@
 class Solution:
     def maxDistToClosest(self, seats: List[int]) -> int:
-        n = len(seats)
-        distance = [0] * n
+        last_one = -1
+        distance = 0
 
-        for i in range(1, n):
-            if seats[i]:
-                continue
-
-            if seats[i - 1]:
-                distance[i] = 1
-            else:
-                if distance[i - 1]:
-                    distance[i] = distance[i - 1] + 1
-
-        for i in range(n - 2, -1, -1):
-            if seats[i]:
-                continue
-
-            if seats[i + 1]:
-                distance[i] = 1
-            else:
-                if distance[i]:
-                    distance[i] = min(distance[i], distance[i + 1] + 1)
+        for idx, seat in enumerate(seats):
+            if seat:
+                if last_one == -1:
+                    distance = idx
                 else:
-                    distance[i] = distance[i + 1] + 1
+                    distance = max(
+                        distance,
+                        (idx - last_one) // 2
+                    )
 
-        return max(distance)
+                last_one = idx
+
+        return max(
+            distance,
+            len(seats) - last_one - 1
+        )

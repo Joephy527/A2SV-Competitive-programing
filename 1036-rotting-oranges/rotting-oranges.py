@@ -18,10 +18,7 @@ class Solution:
                 elif grid[row][col] == 1:
                     fresh_count += 1
 
-        while queue:
-            if not fresh_count:
-                return minute
-
+        while queue and fresh_count:
             for _ in range(len(queue)):
                 row, col = queue.popleft()
 

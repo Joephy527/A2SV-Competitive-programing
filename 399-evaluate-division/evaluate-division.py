@@ -1,22 +1,34 @@
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
-        graph = defaultdict(dict)
+        parent, weight = {}, {}
         answer = [-1.0] * len(queries)
 
-        for (u, v), val in zip(equations, values):
-            graph[u][v] = val
-            graph[v][u] = 1 / val
-            graph[u][u] = graph[v][v] = 1.0
+        def find(u):
+            if u not in parent:
+                parent[u] = u
+                weight[u] = 1.0
+            elif parent[u] != u:
+                cur_parent = parent[u]
+                parent[u] = find(cur_parent)
+                weight[u] *= weight[cur_parent]
 
-        for k in graph:
-            for i in graph[k]:
-                for j in graph[k]:
-                    if i == j:
-                        continue
-                    
-                    graph[i][j] = graph[i][k] * graph[k][j]
+            return parent[u]
+
+        def union(u, v, w):
+            parent_u, parent_v = find(u), find(v)
+            
+            if parent_u != parent_v:
+                parent[parent_u] = parent_v
+                weight[parent_u] = weight[v] * w / weight[u]
+
+        for (u, v), w in zip(equations, values):
+            union(u, v, w)
 
         for i, (u, v) in enumerate(queries):
-            answer[i] = graph[u].get(v, -1.0)
+            if u in parent and v in parent:
+                parent_u, parent_v = find(u), find(v)
+                
+                if parent_u == parent_v:
+                    answer[i] = weight[u] / weight[v]
 
         return answer

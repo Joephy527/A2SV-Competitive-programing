@@ -1,31 +1,22 @@
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
-        graph = defaultdict(list)
+        graph = defaultdict(dict)
         answer = [-1.0] * len(queries)
 
         for (u, v), val in zip(equations, values):
-            graph[u].append((v, val))
-            graph[v].append((u, 1 / val))
+            graph[u][v] = val
+            graph[v][u] = 1 / val
+            graph[u][u] = graph[v][v] = 1.0
 
-        def dfs(src, dest, visited):
-            if src not in graph or dest not in graph:
-                return -1.0
-
-            if src == dest:
-                return 1.0
-
-            visited.add(src)
-
-            for neigh, val in graph[src]:
-                if neigh not in visited:
-                    cur = dfs(neigh, dest, visited)
-
-                    if cur != -1.0:
-                        return cur * val
-
-            return -1.0
+        for k in graph:
+            for i in graph[k]:
+                for j in graph[k]:
+                    if i == j:
+                        continue
+                    
+                    graph[i][j] = graph[i][k] * graph[k][j]
 
         for i, (u, v) in enumerate(queries):
-            answer[i] = dfs(u, v, set())
+            answer[i] = graph[u].get(v, -1.0)
 
         return answer

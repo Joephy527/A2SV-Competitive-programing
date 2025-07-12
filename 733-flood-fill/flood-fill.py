@@ -7,7 +7,8 @@ class Solution:
         def is_valid(row, col):
             return (
                 rows > row >= 0 <= col < cols and
-                image[row][col] == starting
+                image[row][col] == starting and
+                image[row][col] != color
             )
 
         def dfs(row, col):
@@ -15,10 +16,10 @@ class Solution:
 
             for x, y in directions:
                 r, c = row + x, col + y
+                
                 if is_valid(r, c):
                     dfs(r, c)
-        
-        if starting != color:
-            dfs(sr, sc)
+
+        dfs(sr, sc)
 
         return image

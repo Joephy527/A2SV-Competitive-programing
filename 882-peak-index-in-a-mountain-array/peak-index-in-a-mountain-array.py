@@ -3,13 +3,20 @@ class Solution:
         left, right = 0, len(arr) - 1
 
         while left <= right:
-            mid = (left + right) // 2
-            m =  arr[mid]
-            l, r = arr[mid - 1], arr[mid + 1]
+            mid = left + (right - left) // 2
 
-            if l < m > r:
+            if (
+                mid > 0 and mid < len(arr) - 1 and
+                arr[mid - 1] < arr[mid] > arr[mid + 1]
+            ):
                 return mid
-            elif l > arr[mid]:
-                right = mid
+            elif mid > 0:
+                if arr[mid - 1] > arr[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
             else:
-                left = mid + 1
+                if arr[mid] > arr[mid + 1]:
+                    right = mid - 1
+                else:
+                    left = mid + 1

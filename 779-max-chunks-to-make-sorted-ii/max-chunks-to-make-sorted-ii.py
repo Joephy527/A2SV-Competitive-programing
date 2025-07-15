@@ -5,11 +5,8 @@ class Solution:
         for num in arr:
             cur_max = num
 
-            while stack and num < stack[-1]:
-                cur_max = max(
-                    cur_max,
-                    stack.pop()
-                )
+            while stack and stack[-1] > num:
+                cur_max = max(cur_max, stack.pop())
 
             stack.append(cur_max)
 

@@ -5,8 +5,8 @@ class Solution:
         queue = deque()
 
         for a, b in prerequisites:
-            indegree[b] += 1
-            graph[a].append(b)
+            indegree[a] += 1
+            graph[b].append(a)
 
         for v in range(len(indegree)):
             if not indegree[v]:

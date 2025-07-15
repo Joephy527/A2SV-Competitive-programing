@@ -3,10 +3,13 @@ class Solution:
         stack = []
 
         for num in arr:
-            cur_max = num
-
-            while stack and stack[-1] > num:
-                cur_max = max(cur_max, stack.pop())
+            if not stack or stack[-1] <= num:
+                cur_max = num
+            else:
+                cur_max = stack[-1]
+                
+                while stack and stack[-1] > num:
+                    stack.pop()
 
             stack.append(cur_max)
 

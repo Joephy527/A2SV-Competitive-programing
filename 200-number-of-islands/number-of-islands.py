@@ -10,19 +10,24 @@ class Solution:
         def is_land(row, col):
             return grid[row][col] == "1"
 
-        def dfs(row, col):
-            grid[row][col] = "0"
+        def bfs(start_row, start_col):
+            queue = deque([(start_row, start_col)])
+            grid[start_row][start_col] = "0"
 
-            for x, y in directions:
-                r, c = row + x, col + y
+            while queue:
+                row, col = queue.popleft()
 
-                if is_inbound(r, c) and is_land(r, c):
-                    dfs(r, c)
+                for x, y in directions:
+                    r, c = row + x, col + y
+
+                    if is_inbound(r, c) and is_land(r, c):
+                        grid[r][c] = "0"
+                        queue.append((r, c))
 
         for row in range(rows):
             for col in range(cols):
                 if is_land(row, col):
-                    dfs(row, col)
+                    bfs(row, col)
                     islands += 1
 
         return islands

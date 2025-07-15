@@ -1,27 +1,29 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         graph = [[] for _ in range(numCourses)]
-        visited = [-1] * numCourses
+        visited = [0] * numCourses
 
-        for a, b in prerequisites:
-            graph[a].append(b)
+        for u, v in prerequisites:
+            graph[u].append(v)
 
         def dfs(vertex):
-            if visited[vertex] == 1:
-                return False
+            if visited[vertex] == -1:
+                return
 
-            visited[vertex] = 1
+            if visited[vertex] == 1:
+                return True
+
+            visited[vertex] = -1
 
             for neigh in graph[vertex]:
-                if visited[neigh] and not dfs(neigh):
-                    return False
+                if not dfs(neigh):
+                    return
 
-            visited[vertex] = 0
-
+            visited[vertex] = 1
             return True
 
-        for course in range(numCourses):
-            if visited[course] and not dfs(course):
+        for v in range(numCourses):
+            if not dfs(v):
                 return False
 
         return True

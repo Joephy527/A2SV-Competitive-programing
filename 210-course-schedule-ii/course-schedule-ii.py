@@ -1,35 +1,26 @@
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         graph = [[] for _ in range(numCourses)]
-        visited = [-1] * numCourses
-        order = []
+        indegree = [0] * numCourses
+        queue = deque()
+        path = []
 
         for a, b in prerequisites:
-            graph[a].append(b)
+            indegree[a] += 1
+            graph[b].append(a)
 
-        def dfs(vertex):
-            if visited[vertex] == 1:
-                return False
+        for v in range(len(indegree)):
+            if not indegree[v]:
+                queue.append(v)
 
-            visited[vertex] = 1
-
-            for neigh in graph[vertex]:
-                if not visited[neigh]:
-                    continue
-                
-                if not dfs(neigh):
-                    return False
-
-            visited[vertex] = 0
-            order.append(vertex)
-
-            return True
-
-        for course in range(numCourses):
-            if not visited[course]:
-                continue
+        while queue:
+            v = queue.popleft()
+            path.append(v)
             
-            if not dfs(course):
-                return []
+            for neigh in graph[v]:
+                indegree[neigh] -= 1
 
-        return order
+                if not indegree[neigh]:
+                    queue.append(neigh)
+
+        return path if not sum(indegree) else []

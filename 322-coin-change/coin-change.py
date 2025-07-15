@@ -6,8 +6,6 @@ class Solution:
         for amt in range(1, amount + 1):
             for coin in coins:
                 if amt - coin >= 0:
-                    memo[amt] = min(memo[amt], memo[amt - coin])
-
-            memo[amt] += 1
+                    memo[amt] = min(memo[amt], 1 + memo[amt - coin])
 
         return memo[amount] if memo[amount] != float("inf") else -1

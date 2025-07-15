@@ -1,13 +1,9 @@
 class Solution:
     def maxChunksToSorted(self, arr: List[int]) -> int:
-        stack = []
+        chunks = offset = 0
 
-        for num in arr:
-            cur_max = num
-            
-            while stack and stack[-1] > num:
-                cur_max = max(cur_max, stack.pop())
+        for expected, current in enumerate(arr):
+            offset += current - expected
+            chunks += offset == 0
 
-            stack.append(cur_max)
-
-        return len(stack)
+        return chunks

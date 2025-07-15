@@ -6,5 +6,5 @@ class Solution:
         for coin in coins:
             for amt in range(coin, amount + 1):
                 memo[amt] += memo[amt - coin]
-        
-        return memo[-1]
+
+        return memo[amount]

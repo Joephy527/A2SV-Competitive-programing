@@ -1,19 +1,17 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
         n = len(height)
-        prefix = [0] * n
-        suffix = [0] * n
-        water = 0
+        left, right = 0, n - 1
+        water = left_max = right_max = 0
 
-        prefix[0], suffix[-1] = height[0], height[-1]
-
-        for i in range(1, n):
-            prefix[i] = max(height[i], prefix[i - 1])
-
-        for i in range(n - 2, -1, -1):
-            suffix[i] = max(height[i], suffix[i + 1])
-
-        for i, (left, right) in enumerate(zip(prefix, suffix)):
-            water += min(left, right) - height[i]
+        while left < right:
+            if height[left] < height[right]:
+                left_max = max(left_max, height[left])
+                water += left_max - height[left]
+                left += 1
+            else:
+                right_max = max(right_max, height[right])
+                water += right_max - height[right]
+                right -= 1
 
         return water

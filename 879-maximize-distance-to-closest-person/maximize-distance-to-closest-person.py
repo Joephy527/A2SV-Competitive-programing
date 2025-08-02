@@ -16,7 +16,4 @@ class Solution:
 
             distance[i] = min(distance[i + 1] + 1, distance[i])
 
-        if not seats[0]:
-            distance[0] = max(distance[0], distance[1] + 1)
-
         return max(distance)

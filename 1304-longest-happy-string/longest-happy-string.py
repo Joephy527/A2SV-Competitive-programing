@@ -1,10 +1,16 @@
 class Solution:
     def longestDiverseString(self, a: int, b: int, c: int) -> str:
-        count = {"a": -a, "b": -b, "c": -c}
-        heap = [(cnt, char) for char, cnt in count.items() if cnt]
+        heap = []
         happy = []
 
-        heapify(heap)
+        if a != 0:
+            heappush(heap, (-a, "a"))
+        
+        if b != 0:
+            heappush(heap, (-b, "b"))
+        
+        if c != 0:
+            heappush(heap, (-c, "c"))
 
         while heap:
             cnt1, chr1 = heappop(heap)

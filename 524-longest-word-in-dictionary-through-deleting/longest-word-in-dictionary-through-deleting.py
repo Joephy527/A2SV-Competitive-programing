@@ -3,25 +3,25 @@ class Solution:
         word = ""
         
         def is_possible(word):
-            p1 = p2 = 0
+            idx = 0
 
-            while p2 < len(word) and p1 < len(s):
-                if s[p1] == word[p2]:
-                    p2 += 1
+            for c in s:
+                if idx < len(word) and c == word[idx]:
+                    idx += 1
 
-                p1 += 1
-
-            return p2 == len(word)
+            return idx == len(word)
 
         for w in dictionary:
-            if is_possible(w):
-                if (
+            if (
+                is_possible(w) and
+                (
                     len(w) > len(word) or
                     (
                         len(w) == len(word) and
                         w < word
                     )
-                ):
-                    word = w
+                )
+            ):
+                word = w
 
         return word

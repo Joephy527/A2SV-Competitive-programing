@@ -3,6 +3,11 @@ class Solution:
         words = set(wordList)
         queue = deque([(beginWord, 1)])
 
+        if endWord not in words:
+            return 0
+
+        words.discard(beginWord)
+
         while queue:
             word, step = queue.popleft()
 

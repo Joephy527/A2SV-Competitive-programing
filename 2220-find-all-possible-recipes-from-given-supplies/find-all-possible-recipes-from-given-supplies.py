@@ -1,21 +1,28 @@
 class Solution:
     def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
-        recipes_idx = {r: i for i, r in enumerate(recipes)}
-        can_make = {supply: True for supply in supplies}
+        supplies = set(supplies)
+        graph = defaultdict(list)
+        visited = set()
 
-        def dfs(vertex, visited):
-            if can_make.get(vertex, False):
+        for rec, ing in zip(recipes, ingredients):
+            graph[rec] = ing
+
+        def dfs(rec):
+            if rec in supplies:
                 return True
 
-            if vertex not in recipes_idx or vertex in visited:
+            if rec not in graph:
                 return False
 
-            visited.add(vertex)
-            
-            can_make[vertex] = all(
-                dfs(r, visited) for r in ingredients[recipes_idx[vertex]]
-            )
+            visited.add(rec)
 
-            return can_make[vertex]
+            for ing in graph[rec]:
+                if ing in visited or not dfs(ing):
+                    return False
 
-        return [r for r in recipes if dfs(r, set())]
+            visited.remove(rec)
+            supplies.add(rec)
+
+            return True
+
+        return [rec for rec in recipes if dfs(rec)]

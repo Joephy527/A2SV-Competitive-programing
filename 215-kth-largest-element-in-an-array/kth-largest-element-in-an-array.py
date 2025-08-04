@@ -7,8 +7,8 @@ class Solution:
         for num in nums:
             count[num - min_num] += 1
 
-        for i in range(n - 1, -1, -1):
-            k -= count[i]
+        for num in range(n - 1, -1, -1):
+            k -= count[num]
 
             if k < 1:
-                return i + min_num
+                return num + min_num

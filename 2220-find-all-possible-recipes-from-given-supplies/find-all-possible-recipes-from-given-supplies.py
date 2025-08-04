@@ -1,28 +1,24 @@
 class Solution:
     def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
-        supplies = set(supplies)
         graph = defaultdict(list)
-        visited = set()
+        indegree = {}
+        queue = deque(supplies)
+        cookable = []
 
-        for rec, ing in zip(recipes, ingredients):
-            graph[rec] = ing
+        for rec, ingredient in zip(recipes, ingredients):
+            for ing in ingredient:
+                graph[ing].append(rec)
 
-        def dfs(rec):
-            if rec in supplies:
-                return True
+            indegree[rec] = len(ingredient)
 
-            if rec not in graph:
-                return False
+        while queue:
+            ing = queue.popleft()
 
-            visited.add(rec)
+            for rec in graph[ing]:
+                indegree[rec] -= 1
 
-            for ing in graph[rec]:
-                if ing in visited or not dfs(ing):
-                    return False
+                if indegree[rec] == 0:
+                    cookable.append(rec)
+                    queue.append(rec)
 
-            visited.remove(rec)
-            supplies.add(rec)
-
-            return True
-
-        return [rec for rec in recipes if dfs(rec)]
+        return cookable

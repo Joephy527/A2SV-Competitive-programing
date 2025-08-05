@@ -4,7 +4,7 @@ class Solution:
         parentheses = []
 
         def back_track(opened = 0, closed = 0):
-            if opened + closed == n * 2:
+            if opened == closed == n:
                 combinations.append("".join(parentheses))
 
                 return

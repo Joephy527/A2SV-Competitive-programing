@@ -3,10 +3,7 @@ class Solution:
         if n < 1:
             return False
         
-        while n > 2:
-            if n % 2:
-                return False
-
+        while not n % 2:
             n //= 2
 
-        return True
+        return n == 1

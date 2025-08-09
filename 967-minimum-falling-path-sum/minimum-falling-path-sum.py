@@ -2,7 +2,6 @@ class Solution:
     def minFallingPathSum(self, matrix: List[List[int]]) -> int:
         rows, cols = len(matrix), len(matrix[0])
         prev = matrix[0]
-        print(prev)
 
         for r in range(1, rows):
             cur = prev[:]

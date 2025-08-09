@@ -9,10 +9,8 @@ class Solution:
         roman = []
 
         for value, symbol in value_symbols:
-            if num == 0:
-                break
-            count = num // value
-            roman.append(symbol * count)
-            num -= count * value
+            while num >= value:
+                num -= value
+                roman += symbol
 
         return ''.join(roman)

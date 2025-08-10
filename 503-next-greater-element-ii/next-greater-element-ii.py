@@ -1,16 +1,15 @@
 class Solution:
     def nextGreaterElements(self, nums: List[int]) -> List[int]:
+        n = len(nums)
         stack = []
-        greater = [-1] * len(nums)
+        greater = [-1] * n
 
-        for idx, num in enumerate(nums):
-            while stack and nums[stack[-1]] < num:
+        for i in range(2 * n):
+            num = nums[i % n]
+            
+            while stack and num > nums[stack[-1]]:
                 greater[stack.pop()] = num
 
-            stack.append(idx)
-
-        for num in nums:
-            while stack and nums[stack[-1]] < num:
-                greater[stack.pop()] = num
+            stack.append(i % n)
 
         return greater

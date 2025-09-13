@@ -10,10 +10,11 @@ class Node:
 
 class Solution:
     def flatten(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        def get_flattened(head):
-            cur = head
+        def get_flattened(node):
+            cur = node
+            tail = node
 
-            while cur and (cur.next or cur.child):
+            while cur:
                 if cur.child:
                     nxt = cur.next
                     h, c = get_flattened(cur.child)
@@ -21,16 +22,19 @@ class Solution:
                     cur.next = h
                     h.prev = cur
 
-                    if c:
-                        c.next = nxt
-                    
                     if nxt:
+                        c.next = nxt
                         nxt.prev = c
-                    
-                    cur = nxt if nxt else c
+
+                    tail = c
+                    cur = nxt
                 else:
+                    tail = cur
                     cur = cur.next
 
-            return head, cur
+            return node, tail
+
+        if not head:
+            return None
 
         return get_flattened(head)[0]

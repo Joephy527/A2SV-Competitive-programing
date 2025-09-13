@@ -17,24 +17,26 @@ class Solution:
             while cur:
                 if cur.child:
                     nxt = cur.next
-                    h, c = get_flattened(cur.child)
+                    h = cur.child
+
+                    t = get_flattened(cur.child)
+                    
                     cur.child = None
                     cur.next = h
                     h.prev = cur
 
                     if nxt:
-                        c.next = nxt
-                        nxt.prev = c
+                        t.next = nxt
+                        nxt.prev = t
 
-                    tail = c
+                    tail = t
                     cur = nxt
                 else:
                     tail = cur
                     cur = cur.next
 
-            return node, tail
+            return tail
 
-        if not head:
-            return None
+        get_flattened(head)
 
-        return get_flattened(head)[0]
+        return head

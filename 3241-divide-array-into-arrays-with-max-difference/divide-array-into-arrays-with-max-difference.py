@@ -5,9 +5,11 @@ class Solution:
         divided = []
 
         for i in range(0, len(nums) - 2, 3):
-            if nums[i + 2] - nums[i] > k:
+            a, c = nums[i], nums[i + 2]
+            
+            if c - a > k:
                 return []
 
-            divided.append(nums[i: i + 3])
+            divided.append([a, nums[i + 1], c])
 
         return divided

@@ -1,24 +1,24 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-        combinations = []
+        combination = []
         parentheses = []
-
-        def back_track(opened = 0, closed = 0):
-            if opened == closed == n:
-                combinations.append("".join(parentheses))
+        
+        def back_track(op = 0, closed = 0):
+            if closed == n:
+                parentheses.append("".join(combination))
 
                 return
 
-            if opened < n:
-                parentheses.append("(")
-                back_track(opened + 1, closed)
-                parentheses.pop()
+            if op < n:
+                combination.append("(")
+                back_track(op + 1, closed)
+                combination.pop()
 
-            if opened > closed:
-                parentheses.append(")")
-                back_track(opened, closed + 1)
-                parentheses.pop()
+            if closed < op:
+                combination.append(")")
+                back_track(op, closed + 1)
+                combination.pop()
 
         back_track()
 
-        return combinations
+        return parentheses

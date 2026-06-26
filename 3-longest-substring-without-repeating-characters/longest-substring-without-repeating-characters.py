@@ -1,15 +1,16 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        count = defaultdict(int)
+        idx_map = defaultdict(lambda: -1)
         p = max_length = 0
 
         for seek in range(len(s)):
             c = s[seek]
-            count[c] += 1
+            idx = idx_map[c]
 
-            while count[c] > 1:
-                count[s[p]] -= 1
-                p += 1
+            if c in idx_map and p <= idx:
+                p = idx + 1
+
+            idx_map[c] = seek
 
             max_length = max(max_length, seek - p + 1)
 

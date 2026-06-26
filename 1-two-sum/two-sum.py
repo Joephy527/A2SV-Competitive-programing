@@ -3,9 +3,9 @@ class Solution:
         idx_map = {}
 
         for idx, num in enumerate(nums):
-            dif = target - num
+            diff = target - num
 
-            if dif in idx_map:
-                return [idx_map[dif], idx]
+            if diff in idx_map:
+                return [idx_map[diff], idx]
 
             idx_map[num] = idx

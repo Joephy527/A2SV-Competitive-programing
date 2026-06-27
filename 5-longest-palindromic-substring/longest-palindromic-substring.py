@@ -1,21 +1,27 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        n = len(s)
-        memo = [[False] * n for _ in range(n)]
-        max_left = max_right = 0
+        def expand_around_center(left, right):
+            while (
+                left > -1 and right < len(s)
+                and s[left] == s[right]
+            ):
+                left -= 1
+                right += 1
 
-        for end in range(n):
-            for start in range(end + 1):
-                if (
-                    s[start] == s[end] and
-                    (
-                        end - start < 3 or
-                        memo[start + 1][end - 1]
-                    )
-                ):
-                    memo[start][end] = True
+            return left + 1, right
 
-                    if end - start > max_right - max_left:
-                        max_left, max_right = start, end
+        best_start = best_end = 0
 
-        return s[max_left:max_right + 1]
+        for center in range(len(s)):
+            center_pairs = (
+                (center, center),
+                (center, center + 1),
+            )
+
+            for left_center, right_center in center_pairs:
+                start, end = expand_around_center(left_center, right_center)
+
+                if end - start > best_end - best_start:
+                    best_start, best_end = start, end
+
+        return s[best_start:best_end]

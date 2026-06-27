@@ -1,28 +1,30 @@
 class Solution:
     def reorganizeString(self, s: str) -> str:
-        count = Counter(s)
-        heap = [(-cnt, char) for char, cnt in count.items()]
-        string = []
+        counts = Counter(s)
+        max_heap = [(-count, char) for char, count in counts.items()]
+        rearrangement = []
 
-        heapify(heap)
-        print(heap)
+        heapify(max_heap)
 
-        while heap:
-            cnt, char = heappop(heap)
-            cnt += 1
+        while max_heap:
+            cnt, char = heappop(max_heap)
             
-            string.append(char)
+            if not cnt:
+                continue
+            
+            rearrangement.append(char)
 
-            if cnt:
-                if not heap: return ""
-                cnt_2, char_2 = heappop(heap)
-                cnt_2 += 1
+            if cnt < -1:
+                if not max_heap:
+                    return ""
+
+                cnt_2, char_2 = heappop(max_heap)
                 
-                string.append(char_2)
-
-                heappush(heap, (cnt, char))
+                if not cnt_2:
+                    return ""
                 
-                if cnt_2:
-                    heappush(heap, (cnt_2, char_2))
+                rearrangement.append(char_2)
+                heappush(max_heap, (cnt_2 + 1, char_2))
+                heappush(max_heap, (cnt + 1, char))
 
-        return "".join(string)
+        return "".join(rearrangement)

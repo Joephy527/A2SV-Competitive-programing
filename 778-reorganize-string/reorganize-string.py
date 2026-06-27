@@ -9,10 +9,6 @@ class Solution:
 
         while max_heap:
             cnt, char = heappop(max_heap)
-            
-            if char == prev_char:
-                return ""
-
             rearrangement.append(char)
 
             if prev_count < 0:

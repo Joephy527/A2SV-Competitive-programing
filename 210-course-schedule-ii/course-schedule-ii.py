@@ -3,24 +3,24 @@ class Solution:
         graph = [[] for _ in range(numCourses)]
         indegree = [0] * numCourses
         queue = deque()
-        path = []
+        order = []
 
         for a, b in prerequisites:
-            indegree[a] += 1
             graph[b].append(a)
+            indegree[a] += 1
 
-        for v in range(len(indegree)):
-            if not indegree[v]:
-                queue.append(v)
+        for idx, num in enumerate(indegree):
+            if not num:
+                queue.append(idx)
 
         while queue:
-            v = queue.popleft()
-            path.append(v)
-            
-            for neigh in graph[v]:
-                indegree[neigh] -= 1
+            course = queue.popleft()
+            order.append(course)
 
-                if not indegree[neigh]:
-                    queue.append(neigh)
+            for c in graph[course]:
+                indegree[c] -= 1
 
-        return path if not sum(indegree) else []
+                if not indegree[c]:
+                    queue.append(c)
+
+        return order if len(order) == numCourses else []

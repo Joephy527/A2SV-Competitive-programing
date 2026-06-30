@@ -2,26 +2,25 @@ class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         graph = [[] for _ in range(numCourses)]
         visited = [0] * numCourses
+        indegree = [0] * numCourses
+        queue = deque()
 
         for a, b in prerequisites:
-            graph[a].append(b)
+            graph[b].append(a)
+            indegree[a] += 1
 
-        def dfs(course):
-            visited[course] = -1
+        for idx, num in enumerate(indegree):
+            if not num:
+                queue.append(idx)
+
+        while queue:
+            course = queue.popleft()
+            visited[course] = True
 
             for c in graph[course]:
-                if visited[c] == 1:
-                    continue
+                indegree[c] -= 1
 
-                if visited[c] == -1 or not dfs(c):
-                    return False
-            
-            visited[course] = 1
-            
-            return True
+                if not indegree[c] and not visited[c]:
+                    queue.append(c)
 
-        for course in range(numCourses):
-            if not visited[course] and not dfs(course):
-                return False
-
-        return True
+        return not sum(indegree)

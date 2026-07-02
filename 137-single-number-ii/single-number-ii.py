@@ -1,9 +1,17 @@
 class Solution:
     def singleNumber(self, nums: List[int]) -> int:
-        one = two = 0
+        unique = 0
 
-        for num in nums:
-            one = one ^ num & ~two
-            two = two ^ num & ~one
+        for bit_position in range(32):
+            bit_count = 0
 
-        return one
+            for num in nums:
+                bit_count += (num >> bit_position) & 1
+
+            if bit_count % 3:
+                unique |= 1 << bit_position
+
+        if unique & (1 << 31):
+            unique -= 1 << 32
+
+        return unique

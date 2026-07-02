@@ -1,17 +1,17 @@
 class Solution:
     def singleNumber(self, nums: List[int]) -> List[int]:
-        xor = 0
+        combined = 0
 
         for num in nums:
-            xor ^= num
+            combined ^= num
 
-        set_bit = xor & -xor
-        a = b = 0
+        set_bit = combined & -combined
+        first_num = second_num = 0
 
         for num in nums:
-            if num & set_bit:
-                a ^= num
+            if set_bit & num:
+                first_num ^= num
             else:
-                b ^= num
+                second_num ^= num
 
-        return [a, b]
+        return [first_num, second_num]

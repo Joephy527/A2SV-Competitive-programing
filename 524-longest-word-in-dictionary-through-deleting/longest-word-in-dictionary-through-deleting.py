@@ -1,27 +1,15 @@
 class Solution:
     def findLongestWord(self, s: str, dictionary: List[str]) -> str:
-        word = ""
-        
-        def is_possible(word):
-            idx = 0
+        dictionary.sort(key=lambda word: (-len(word), word))
 
-            for c in s:
-                if idx < len(word) and c == word[idx]:
-                    idx += 1
+        for word in dictionary:
+            pw = 0
 
-            return idx == len(word)
+            for ps in range(len(s)):
+                if s[ps] == word[pw]:
+                    pw += 1
+                    
+                    if pw == len(word):
+                        return word
 
-        for w in dictionary:
-            if (
-                is_possible(w) and
-                (
-                    len(w) > len(word) or
-                    (
-                        len(w) == len(word) and
-                        w < word
-                    )
-                )
-            ):
-                word = w
-
-        return word
+        return ""

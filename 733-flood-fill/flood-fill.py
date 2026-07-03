@@ -4,23 +4,22 @@ class Solution:
         directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         original_color = image[sr][sc]
 
-        if original_color == color:
-            return image
+        def is_legit(row, col):
+            return (
+                rows > row >= 0 <= col < cols and
+                image[row][col] != color and
+                image[row][col] == original_color
+            )
 
-        image[sr][sc] = color
-        queue = deque([(sr, sc)])
-
-        def is_inbound(row, col):
-            return rows > row >= 0 <= col < cols 
-
-        while queue:
-            row, col = queue.popleft()
+        def dfs(row, col):
+            image[row][col] = color
 
             for x, y in directions:
                 r, c = row + x, col + y
-                
-                if is_inbound(r, c) and image[r][c] == original_color:
-                    image[r][c] = color
-                    queue.append((r, c))
+
+                if is_legit(r, c):
+                    dfs(r, c)
+
+        dfs(sr, sc)
 
         return image

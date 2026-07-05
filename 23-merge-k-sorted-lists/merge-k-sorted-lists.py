@@ -8,14 +8,16 @@ class Solution:
         heap = []
         dummy = cur = ListNode()
 
-        for linked in lists:
-            while linked:
-                heappush(heap, linked.val)
-                linked = linked.next
+        for idx, linked in enumerate(lists):
+            if linked:
+                heappush(heap, (linked.val, idx, linked))
 
         while heap:
-            val = heappop(heap)
-            cur.next = ListNode(val)
+            _, idx, node = heappop(heap)
+            cur.next = node
             cur = cur.next
+
+            if node.next:
+                heappush(heap, (node.next.val, idx, node.next))
 
         return dummy.next

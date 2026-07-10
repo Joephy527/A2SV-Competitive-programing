@@ -3,23 +3,14 @@ class Solution:
         n, m = len(s), len(t)
         count_t = Counter(t)
         count_s = defaultdict(int)
-        p = start = 0
+        p = start = valid = 0
         end = n
-
-        if m > n:
-            return ""
-
-        def checkChars():
-            valid = 0
-            
-            for char, count in count_t.items():
-                valid += int(count_s[char] >= count)
-
-            return valid == len(count_t)
 
         for seek in range(n):
             char = s[seek]
             count_s[char] += 1
+
+            valid += int(count_s[char] == count_t[char])
 
             while (
                 p <= seek and
@@ -29,7 +20,7 @@ class Solution:
                 p += 1
 
             if (
-                checkChars() and
+                valid == len(count_t) and
                 end - start > seek - p
             ):
                 start, end = p, seek

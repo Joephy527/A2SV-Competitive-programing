@@ -1,17 +1,25 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        n = len(s)
+        n, m = len(s), len(t)
         count_t = Counter(t)
         count_s = defaultdict(int)
-        p = valid = start = 0
-        end = n + 1
+        p = start = 0
+        end = n
+
+        if m > n:
+            return ""
+
+        def checkChars():
+            valid = 0
+            
+            for char, count in count_t.items():
+                valid += int(count_s[char] >= count)
+
+            return valid == len(count_t)
 
         for seek in range(n):
             char = s[seek]
             count_s[char] += 1
-            
-            if count_s[char] == count_t[char]:
-                valid += 1
 
             while (
                 p <= seek and
@@ -21,9 +29,9 @@ class Solution:
                 p += 1
 
             if (
-                valid == len(count_t) and
+                checkChars() and
                 end - start > seek - p
             ):
                 start, end = p, seek
 
-        return s[start:end + 1] if end != n + 1 else ""
+        return s[start:end + 1] if end < n else ""

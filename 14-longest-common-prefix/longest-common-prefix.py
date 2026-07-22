@@ -1,7 +1,7 @@
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        n = len(strs)
         initial = strs[0]
+        prefix = len(initial)
 
         def get_prefix_idx(string):
             p = 0
@@ -15,9 +15,7 @@ class Solution:
 
             return p
 
-        prefix = len(strs[0])
+        for string in strs:
+            prefix = get_prefix_idx(string)
 
-        for idx in range(1, n):
-            prefix = get_prefix_idx(strs[idx])
-
-        return strs[0][:prefix]
+        return initial[:prefix]

@@ -3,22 +3,21 @@ class Solution:
         n = len(nums)
         permutations = []
         permutation = []
-        used = [False] * n
 
-        def back_track():
+        def back_track(set_bits):
             if len(permutation) == n:
                 permutations.append(permutation[:])
 
                 return
 
             for i in range(n):
-                if not used[i]:
-                    used[i] = True
-                    permutation.append(nums[i])
-                    back_track()
-                    permutation.pop()
-                    used[i] = False
+                set_bit = 1 << i
 
-        back_track()
+                if not set_bit & set_bits:
+                    permutation.append(nums[i])
+                    back_track(set_bit | set_bits)
+                    permutation.pop()
+
+        back_track(0)
 
         return permutations

@@ -3,31 +3,33 @@ class Solution:
         rows, cols = len(grid), len(grid[0])
         directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         queue = deque()
-        fresh_count = minute = 0
-
-        def is_inbound(row, col):
-            return rows > row >= 0 <= col < cols
+        minutes = fresh_count = 0
 
         for row in range(rows):
             for col in range(cols):
                 if grid[row][col] == 2:
                     queue.append((row, col))
-
                 if grid[row][col] == 1:
                     fresh_count += 1
 
+        def is_fresh(row, col):
+            return (
+                rows > row >= 0 <= col < cols and
+                grid[row][col] == 1
+            )
+
         while queue and fresh_count:
-            minute += 1
-            
+            minutes += 1
+
             for _ in range(len(queue)):
                 row, col = queue.popleft()
 
                 for x, y in directions:
                     r, c = row + x, col + y
-                    
-                    if is_inbound(r, c) and grid[r][c] == 1:
-                        fresh_count -= 1
+
+                    if is_fresh(r, c):
                         grid[r][c] = 2
                         queue.append((r, c))
+                        fresh_count -= 1
 
-        return -1 if fresh_count else minute
+        return -1 if fresh_count else minutes

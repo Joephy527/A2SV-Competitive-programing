@@ -1,14 +1,13 @@
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
-        far = 0
+        n = len(nums)
+        dp = [False for num in nums]
+        dp[-1] = True
 
-        for i in range(len(nums)):
-            if far < i:
-                break
+        for i in range(n - 2, -1, -1):
+            for j in range(i + 1, min(n, i + nums[i] + 1)):
+                if dp[j]:
+                    dp[i] = True
+                    break
 
-            far = max(far, i + nums[i])
-
-            if far >= len(nums) - 1:
-                return True
-
-        return False
+        return dp[0]
